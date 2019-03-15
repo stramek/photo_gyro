@@ -3,6 +3,7 @@ package pl.marcin.gyrophoto
 import android.Manifest
 import android.content.pm.PackageManager
 import android.hardware.Sensor
+import android.hardware.SensorManager.SENSOR_DELAY_FASTEST
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
@@ -69,7 +70,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getGyroSingle(): Single<ReactiveSensorEvent>? {
-        return ReactiveSensors(this).observeSensor(Sensor.TYPE_GYROSCOPE)
+        return ReactiveSensors(this).observeSensor(Sensor.TYPE_GYROSCOPE, SENSOR_DELAY_FASTEST)
             .subscribeOn(Schedulers.computation())
             .filter(ReactiveSensorFilter.filterSensorChanged())
             .firstOrError()
