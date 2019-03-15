@@ -15,6 +15,7 @@ import com.github.pwittchen.reactivesensors.library.ReactiveSensors
 import io.fotoapparat.Fotoapparat
 import io.fotoapparat.result.BitmapPhoto
 import io.fotoapparat.result.adapter.rxjava2.toSingle
+import io.fotoapparat.result.transformer.scaled
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -78,7 +79,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun getPhotoSingle(): Single<BitmapPhoto> {
         return fotoapparat.takePicture()
-            .toBitmap()
+            .toBitmap(scaled(0.2f))
             .toSingle()
     }
 
