@@ -89,7 +89,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onStop() {
-        super.onStop()
+        compositeDisposable.clear()
         fotoapparat.stop()
+        super.onStop()
     }
 }
