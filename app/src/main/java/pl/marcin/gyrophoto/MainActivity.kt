@@ -6,6 +6,7 @@ import android.hardware.Sensor
 import android.hardware.SensorManager.SENSOR_DELAY_FASTEST
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
@@ -16,6 +17,7 @@ import com.github.pwittchen.reactivesensors.library.ReactiveSensorFilter
 import com.github.pwittchen.reactivesensors.library.ReactiveSensors
 import io.fotoapparat.Fotoapparat
 import io.fotoapparat.result.adapter.rxjava2.toSingle
+import io.reactivex.BackpressureStrategy
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -64,11 +66,12 @@ class MainActivity : AppCompatActivity() {
     private fun initGyro() {
         compositeDisposable += ReactiveSensors(this).observeSensor(
             Sensor.TYPE_GYROSCOPE,
-            SENSOR_DELAY_FASTEST
+            SENSOR_DELAY_FASTEST,
+            Handler(),
+            BackpressureStrategy.LATEST
         )
             .subscribeOn(Schedulers.computation())
             .filter(ReactiveSensorFilter.filterSensorChanged())
-            .onBackpressureLatest()
             .subscribeBy(
                 onNext = {
                     lastGyroValues = it
